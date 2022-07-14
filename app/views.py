@@ -14,7 +14,7 @@ class ArticleList(mixins.ListModelMixin,
     serializer_class = ArticleSerializer
 
     name = openapi.Parameter('name', openapi.IN_QUERY, description="ID", type=openapi.TYPE_STRING)
-    description = openapi.Parameter('description', openapi.IN_QUERY, description="ID", type=openapi.TYPE_STRING)
+    description = openapi.Parameter('description', openapi.IN_QUERY, description="description".upper(), type=openapi.TYPE_STRING)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -32,8 +32,8 @@ class ArticleDetail(mixins.RetrieveModelMixin,
     serializer_class = ArticleSerializer
 
     id = openapi.Parameter('id', openapi.IN_QUERY, description="ID", type=openapi.TYPE_INTEGER)
-    name = openapi.Parameter('name', openapi.IN_QUERY, description="ID", type=openapi.TYPE_STRING)
-    description = openapi.Parameter('description', openapi.IN_QUERY, description="ID", type=openapi.TYPE_STRING)
+    name = openapi.Parameter('name', openapi.IN_QUERY, description="NAME", type=openapi.TYPE_STRING)
+    description = openapi.Parameter('description', openapi.IN_QUERY, description="description".upper(), type=openapi.TYPE_STRING)
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
@@ -42,7 +42,7 @@ class ArticleDetail(mixins.RetrieveModelMixin,
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
-    @swagger_auto_schema(request_body=ArticleSerializer)
+    # @swagger_auto_schema(request_body=ArticleSerializer)
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
@@ -53,12 +53,12 @@ class AuthorList(mixins.ListModelMixin,
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
-    name = openapi.Parameter('name', openapi.IN_QUERY, description="ID", type=openapi.TYPE_STRING)
+    name = openapi.Parameter('name', openapi.IN_QUERY, description="NAME", type=openapi.TYPE_STRING)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
-    @swagger_auto_schema(manual_parameters=[name], request_body=AuthorSerializer)
+    @swagger_auto_schema(request_body=AuthorSerializer)
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
@@ -71,15 +71,15 @@ class AuthorDetail(mixins.RetrieveModelMixin,
     serializer_class = AuthorSerializer
 
     id = openapi.Parameter('id', openapi.IN_QUERY, description="ID", type=openapi.TYPE_INTEGER)
-    name = openapi.Parameter('name', openapi.IN_QUERY, description="ID", type=openapi.TYPE_STRING)
+    name = openapi.Parameter('name', openapi.IN_QUERY, description="NAME", type=openapi.TYPE_STRING)
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
-    @swagger_auto_schema(manual_parameters=[id, name], request_body=AuthorSerializer)
+    @swagger_auto_schema(operation_description='UPDATE ARTICLE', request_body=AuthorSerializer)
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
-    @swagger_auto_schema(manual_parameters=[id], request_body=AuthorSerializer)
+    @swagger_auto_schema(manual_parameters=[id],)
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
